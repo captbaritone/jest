@@ -222,7 +222,7 @@ test('handles property matchers with custom name', () => {
   }
 });
 
-test('handles property matchers with deep expect.objectContaining', () => {
+test.only('handles property matchers with deep expect.objectContaining', () => {
   const filename = 'handle-property-matchers-with-name.test.js';
   const template = makeTemplate(`test('handles property matchers with deep expect.objectContaining', () => {
       expect({ user: { createdAt: $1, name: 'Jest' }}).toMatchSnapshot({ user: expect.objectContaining({ createdAt: expect.any(Date) }) });

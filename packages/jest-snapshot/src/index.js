@@ -13,6 +13,7 @@ import type {Path, SnapshotUpdateState} from 'types/Config';
 
 import fs from 'fs';
 import path from 'path';
+import deepExtend from 'deep-extend';
 import diff from 'jest-diff';
 import {EXPECTED_COLOR, matcherHint, RECEIVED_COLOR} from 'jest-matcher-utils';
 import SnapshotState from './State';
@@ -98,7 +99,7 @@ const toMatchSnapshot = function(
         report,
       };
     } else {
-      Object.assign(received, propertyMatchers);
+      deepExtend(received, propertyMatchers);
     }
   }
 
