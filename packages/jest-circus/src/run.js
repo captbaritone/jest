@@ -7,6 +7,8 @@
  * @flow strict-local
  */
 
+import type {ProjectConfig} from 'types/Config';
+
 import type {
   TestEntry,
   TestResults,
@@ -25,12 +27,12 @@ import {
   makeTestResults,
 } from './utils';
 
-const run = async (): Promise<TestResults> => {
+const run = async (config: ProjectConfig): Promise<TestResults> => {
   const {rootDescribeBlock} = getState();
   dispatch({name: 'run_start'});
   await _runTestsForDescribeBlock(rootDescribeBlock);
   dispatch({name: 'run_finish'});
-  return makeTestResults(getState().rootDescribeBlock);
+  return makeTestResults(rootDescribeBlock, config);
 };
 
 const _runTestsForDescribeBlock = async (describeBlock: DescribeBlock) => {

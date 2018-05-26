@@ -7,6 +7,7 @@
  * @flow strict-local
  */
 
+import type {ProjectConfig} from 'types/Config';
 import type {
   AsyncFn,
   BlockMode,
@@ -21,6 +22,8 @@ import type {
   TestName,
   TestResults,
 } from 'types/Circus';
+
+import StackUtils from 'stack-utils';
 
 import prettyFormat from 'pretty-format';
 
@@ -213,7 +216,11 @@ export const getTestDuration = (test: TestEntry): ?number => {
   return startedAt ? Date.now() - startedAt : null;
 };
 
-export const makeTestResults = (describeBlock: DescribeBlock): TestResults => {
+export const makeTestResults = (
+  describeBlock: DescribeBlock,
+  config: ProjectConfig,
+): TestResults => {
+  const stackUtils = new StackUtils();
   let testResults = [];
   for (const test of describeBlock.tests) {
     const testPath = [];
@@ -227,16 +234,25 @@ export const makeTestResults = (describeBlock: DescribeBlock): TestResults => {
     if (!status) {
       throw new Error('Status should be present after tests are run.');
     }
+
+    let location = null;
+    if (config.testLocationInResults) {
+      const stackLine = test.asyncError.stack.split('\n')[1];
+      const {line, column} = stackUtils.parseLine(stackLine);
+      location = {column, line};
+    }
+
     testResults.push({
       duration: test.duration,
       errors: test.errors.map(_formatError),
+      location,
       status,
       testPath,
     });
   }
 
   for (const child of describeBlock.children) {
-    testResults = testResults.concat(makeTestResults(child));
+    testResults = testResults.concat(makeTestResults(child, config));
   }
 
   return testResults;

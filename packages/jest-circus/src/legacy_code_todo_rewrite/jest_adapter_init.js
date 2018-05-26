@@ -100,7 +100,7 @@ export const runAndTransformResultsToJestFormat = async ({
   globalConfig: GlobalConfig,
   testPath: string,
 }): Promise<TestResult> => {
-  const result = await run();
+  const result = await run(config);
 
   let numFailingTests = 0;
   let numPassingTests = 0;
@@ -124,12 +124,12 @@ export const runAndTransformResultsToJestFormat = async ({
     );
     const title = ancestorTitles.pop();
 
-    // $FlowFixMe Types are slightly incompatible and need to be refactored
     return {
       ancestorTitles,
       duration: testResult.duration,
       failureMessages: testResult.errors,
       fullName: ancestorTitles.concat(title).join(' '),
+      location: testResult.location,
       numPassingAsserts: 0,
       status,
       title: testResult.testPath[testResult.testPath.length - 1],

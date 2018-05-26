@@ -69,7 +69,7 @@ async function runTestInternal(
   /* $FlowFixMe */
   const TestEnvironment = (require(testEnvironment): EnvironmentClass);
   /* $FlowFixMe */
-  const testFramework = (require(config.testRunner): TestFramework);
+  const testFramework = (require(testFramework): TestFramework);
   /* $FlowFixMe */
   const Runtime = (require(config.moduleLoader || 'jest-runtime'): Class<
     RuntimeClass,
