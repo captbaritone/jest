@@ -38,8 +38,11 @@ const _dispatchDescribe = (blockFn, blockName, mode?: BlockMode) => {
   dispatch({blockName, mode, name: 'finish_describe_definition'});
 };
 
-const _addHook = (fn: HookFn, hookType: HookType, timeout: ?number) =>
-  dispatch({asyncError: new Error(), fn, hookType, name: 'add_hook', timeout});
+const _addHook = (fn: HookFn, hookType: HookType, timeout: ?number) => {
+  const error = new Error();
+  dispatch({asyncError, fn, hookType, name: 'add_hook', timeout});
+}
+
 const beforeEach: THook = (fn, timeout) => _addHook(fn, 'beforeEach', timeout);
 const beforeAll: THook = (fn, timeout) => _addHook(fn, 'beforeAll', timeout);
 const afterEach: THook = (fn, timeout) => _addHook(fn, 'afterEach', timeout);

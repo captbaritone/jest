@@ -1,5 +1,9 @@
 ## master
 
+### Features
+
+* `[jest-circus]` Make hooks in empty describe blocks error ([#6320](https://github.com/facebook/jest/pull/6320))
+
 ### Fixes
 
 * `[expect]` toMatchObject throws TypeError when a source property is null ([#6313](https://github.com/facebook/jest/pull/6313))
